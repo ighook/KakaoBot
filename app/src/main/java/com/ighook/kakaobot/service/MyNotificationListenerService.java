@@ -23,10 +23,9 @@ public class MyNotificationListenerService extends NotificationListenerService {
 //            "내가 목줄한거 봤어요?",
 //            "내가 나서면 그건 싸움이 아닌 학살이 되니까...",
 //            "ㄹㅇ 허접이네", "어정쩡한 허접이군요",
-//            "몰?름은 가짜에요",
-            "ㅗ",
-            "네?"
-//            "안됩니다"
+            "몰?름은 가짜에요",
+            "네?",
+            "안됩니다"
     };
 
     @Override
@@ -81,7 +80,9 @@ public class MyNotificationListenerService extends NotificationListenerService {
         String reply = null;
 
         if(title.equals("게와글의 둥지")) {
-            if(message.equals("름님")) {
+            if(message.equals("!명령어")) {
+              reply = "름님/!주사위/젤다/망고/조랭이/허접";
+            } else if(message.equals("름님")) {
                 Random random = new Random();
                 int randomNumber1 = random.nextInt(fma.length);
                 reply = fma[randomNumber1];
@@ -89,7 +90,7 @@ public class MyNotificationListenerService extends NotificationListenerService {
                 Random random = new Random();
                 int randomNumber1 = random.nextInt(100) + 1;
 
-                if(sender.equals("솦랑")) randomNumber1 = 999999;
+                if(sender.equals("랑")) randomNumber1 = 999999;
                 int randomNumber2 = random.nextInt(100) + 1;
 
                 reply = sender + "의 주사위 : " + randomNumber1 + "\n름 봇의 주사위 : " + randomNumber2;
@@ -99,7 +100,7 @@ public class MyNotificationListenerService extends NotificationListenerService {
                 } else {
                     reply += "\n\n름은 허접이에요...";
                 }
-            } else if(message.startsWith("!날씨")) {
+            } /*else if(message.startsWith("!날씨")) {
                 try {
                     String city = message.split(" ")[1];
                     Log.d(TAG, city);
@@ -133,10 +134,12 @@ public class MyNotificationListenerService extends NotificationListenerService {
                 } catch (Exception e) {
                     reply = "도시 이름은 영어로 써줘";
                 }
-            } else if(message.equals("젤다")) {
-                reply = "젤다는 업무 중 이에요";
+            } */else if(message.equals("젤다")) {
+                reply = "젤다는 열심히 일하는중이에요";
             } else if(message.equals("망고")) {
                 reply = "난 예뻐";
+            } else if(message.equals("조랭이") || message.equals("허접")) {
+                reply = "네?";
             }
         }
         return reply;

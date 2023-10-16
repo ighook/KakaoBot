@@ -15,6 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FloatingActionButton addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addLayout();
+            }
+        });
 
         if (!isNotificationServiceEnabled()) {
             Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
@@ -97,4 +109,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void addLayout() {
+        LinearLayout linearLayout = findViewById(R.id.command_list);
+        View layoutToAdd = getLayoutInflater().inflate(R.layout.layout_to_add, null);
+        linearLayout.addView(layoutToAdd);
+    }
 }
