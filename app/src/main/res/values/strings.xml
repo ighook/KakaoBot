@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">KakaoBot</string>
-    <string name="service_name">MyNotificationService</string>
+    <string name="service_name">NotificationService</string>
 </resources>
