@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
             startActivity(intent);
         }
-
-        Log.d("test", "afdsafsdafsafs");
     }
 
     private boolean isNotificationServiceEnabled(){
