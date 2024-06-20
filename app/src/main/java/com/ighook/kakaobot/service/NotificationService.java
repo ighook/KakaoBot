@@ -9,6 +9,7 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 import com.ighook.kakaobot.model.Quotes;
+import com.ighook.kakaobot.model.름;
 
 import org.json.JSONException;
 
@@ -99,6 +100,8 @@ public class NotificationService extends NotificationListenerService {
                 return getRandomQuote();
             } else if("!달러".equals(message) || "!엔화".equals(message) || "!유로".equals(message)) {
                 return getExchangeRateReply(sender, message);
+            } else if(message.startsWith("!로아 ")) {
+                return getLostArkCharacterList(message);
             }
         }
         return null;
@@ -106,7 +109,7 @@ public class NotificationService extends NotificationListenerService {
 
     private String getRandomResponse() {
         Random random = new Random();
-        return RESPONSES[random.nextInt(RESPONSES.length)];
+        return 름.름[random.nextInt(름.름.length)];
     }
 
     private String getRandomQuote() {
@@ -172,6 +175,43 @@ public class NotificationService extends NotificationListenerService {
         } catch (InterruptedException e) {
             Log.e(TAG, "Latch interrupted", e);
             return "환율 정보를 가져오는 도중 인터럽트가 발생했습니다.";
+        }
+    }
+
+    private String getLostArkCharacterList(String message) {
+        String[] parts = message.split(" ");
+        if (parts.length < 2) {
+            return "캐릭터 이름을 입력해주세요.";
+        }
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final StringBuilder result = new StringBuilder();
+
+        String characterName = parts[1];
+
+        Log.d(TAG, "Character name: " + characterName);
+        LostArkService.getCharacterList(characterName, new LostArkService.LostArkCallback() {
+            @Override
+            public void onSuccess(String message) {
+                result.append(message);
+                latch.countDown();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.e(TAG, "Error fetching Lost Ark character list", e);
+                result.append("캐릭터 정보를 가져오는 도중 오류가 발생했습니다.");
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await(); // 콜백이 호출될 때까지 대기
+            Log.d(TAG, "Lost Ark character list result: " + result.toString());
+            return result.toString();
+        } catch (InterruptedException e) {
+            Log.e(TAG, "Latch interrupted", e);
+            return "캐릭터 정보를 가져오는 도중 오류가 발생했습니다.";
         }
     }
 }
